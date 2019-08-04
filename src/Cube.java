@@ -29,75 +29,110 @@ public class Cube {
     }
 
     private void rotate(int surface, int layer, boolean clockwise) {
-        Color[] down=null, left=null, up=null, right=null, tmp=null;
-        switch (surface) {
-            case UP:
-                down = CubeFace.sInverseColor(this.faces[SOUTH].getLine(layer, true));
-                left = CubeFace.sInverseColor(this.faces[WEST].getLine(this.sideLength - layer - 1, false));
-                up = this.faces[NORTH].getLine(this.sideLength - layer - 1, true);
-                right = this.faces[EAST].getLine(layer, false);
-                break;
-            case DOWN:
-                down = CubeFace.sInverseColor(this.faces[NORTH].getLine(layer, true));
-                left = this.faces[WEST].getLine(layer, false);
-                up = this.faces[SOUTH].getLine(this.sideLength-layer-1, true);
-                right = CubeFace.sInverseColor(this.faces[EAST].getLine(this.sideLength-layer-1, false));
-                break;
-            case NORTH:
-                down = CubeFace.sInverseColor(this.faces[UP].getLine(layer, true));
-                left = CubeFace.sInverseColor(this.faces[WEST].getLine(layer, true));
-                up = CubeFace.sInverseColor(this.faces[DOWN].getLine(layer, true));
-                right = CubeFace.sInverseColor(this.faces[EAST].getLine(layer, true));
-                break;
-            case SOUTH:
-                down = this.faces[DOWN].getLine(this.sideLength-layer-1, true);
-                left = this.faces[WEST].getLine(this.sideLength-layer-1, true);
-                up = this.faces[UP].getLine(this.sideLength-layer-1, true);
-                right = this.faces[EAST].getLine(this.sideLength-layer-1, true);
-                break;
-        }
-        assert(down!=null);
-        assert(up!=null);
-        assert(right!=null);
-        assert(left!=null);
-        if (clockwise) {
-            tmp = down;
-            down = right;
-            right = up;
-            up = left;
-            left = tmp;
-        } else {
-            tmp = down;
-            down = left;
-            left = up;
-            up = right;
-            right = tmp;
-        }
-        switch (surface){
-            case UP:
-                this.faces[SOUTH].setLine(CubeFace.sInverseColor(down), layer, true);
-                this.faces[WEST].setLine(CubeFace.sInverseColor(left), this.sideLength-layer-1, false);
-                this.faces[NORTH].setLine(up, this.sideLength-layer-1, true);
-                this.faces[EAST].setLine(right, layer, false);
-                break;
-            case DOWN:
-                this.faces[NORTH].setLine(CubeFace.sInverseColor(down), layer, true);
-                this.faces[WEST].setLine(left, layer, false);
-                this.faces[SOUTH].setLine(up, this.sideLength-layer-1, true);
-                this.faces[EAST].setLine(CubeFace.sInverseColor(right), this.sideLength-layer-1, false);
-                break;
-            case NORTH:
-                this.faces[UP].setLine(CubeFace.sInverseColor(down), layer, true);
-                this.faces[WEST].setLine(CubeFace.sInverseColor(left), layer, true);
-                this.faces[DOWN].setLine(CubeFace.sInverseColor(up), layer, true);
-                this.faces[EAST].setLine(CubeFace.sInverseColor(right), layer, true);
-                break;
-            case SOUTH:
-                this.faces[DOWN].setLine(down, this.sideLength-layer-1, true);
-                this.faces[WEST].setLine(left, this.sideLength-layer-1, true);
-                this.faces[UP].setLine(up, this.sideLength-layer-1, true);
-                this.faces[EAST].setLine(right, this.sideLength-layer-1, true);
-                break;
+        Color[] down = null, left = null, up = null, right = null, tmp = null;
+        try {
+            switch (surface) {
+                case UP:
+                    down = CubeFace.sInverseColor(this.faces[SOUTH].getLine(layer, true));
+                    left = CubeFace.sInverseColor(this.faces[WEST].getLine(this.sideLength - layer - 1, false));
+                    up = this.faces[NORTH].getLine(this.sideLength - layer - 1, true);
+                    right = this.faces[EAST].getLine(layer, false);
+                    break;
+                case DOWN:
+                    down = CubeFace.sInverseColor(this.faces[NORTH].getLine(layer, true));
+                    left = this.faces[WEST].getLine(layer, false);
+                    up = this.faces[SOUTH].getLine(this.sideLength - layer - 1, true);
+                    right = CubeFace.sInverseColor(this.faces[EAST].getLine(this.sideLength - layer - 1, false));
+                    break;
+                case NORTH:
+                    down = CubeFace.sInverseColor(this.faces[UP].getLine(layer, true));
+                    left = CubeFace.sInverseColor(this.faces[WEST].getLine(layer, true));
+                    up = CubeFace.sInverseColor(this.faces[DOWN].getLine(layer, true));
+                    right = CubeFace.sInverseColor(this.faces[EAST].getLine(layer, true));
+                    break;
+                case SOUTH:
+                    down = this.faces[DOWN].getLine(this.sideLength - layer - 1, true);
+                    left = this.faces[WEST].getLine(this.sideLength - layer - 1, true);
+                    up = this.faces[UP].getLine(this.sideLength - layer - 1, true);
+                    right = this.faces[EAST].getLine(this.sideLength - layer - 1, true);
+                    break;
+                case EAST:
+                    down = CubeFace.sInverseColor(this.faces[SOUTH].getLine(this.sideLength - layer - 1, false));
+                    left = CubeFace.sInverseColor(this.faces[UP].getLine(this.sideLength - layer - 1, false));
+                    up = CubeFace.sInverseColor(this.faces[NORTH].getLine(this.sideLength - layer - 1, false));
+                    right = this.faces[DOWN].getLine(layer, false);
+                    break;
+                case WEST:
+                    down = CubeFace.sInverseColor(this.faces[DOWN].getLine(this.sideLength - layer - 1, false));
+                    left = this.faces[NORTH].getLine(layer, false);
+                    up = this.faces[UP].getLine(layer, false);
+                    right = this.faces[SOUTH].getLine(layer, false);
+                    break;
+                default:
+                    System.err.println("invalid surface number: " + surface);
+                    break;
+            }
+            assert (down != null);
+            assert (up != null);
+            assert (right != null);
+            assert (left != null);
+            if (clockwise) {
+                tmp = down;
+                down = right;
+                right = up;
+                up = left;
+                left = tmp;
+            } else {
+                tmp = down;
+                down = left;
+                left = up;
+                up = right;
+                right = tmp;
+            }
+            switch (surface) {
+                case UP:
+                    this.faces[SOUTH].setLine(CubeFace.sInverseColor(down), layer, true);
+                    this.faces[WEST].setLine(CubeFace.sInverseColor(left), this.sideLength - layer - 1, false);
+                    this.faces[NORTH].setLine(up, this.sideLength - layer - 1, true);
+                    this.faces[EAST].setLine(right, layer, false);
+                    break;
+                case DOWN:
+                    this.faces[NORTH].setLine(CubeFace.sInverseColor(down), layer, true);
+                    this.faces[WEST].setLine(left, layer, false);
+                    this.faces[SOUTH].setLine(up, this.sideLength - layer - 1, true);
+                    this.faces[EAST].setLine(CubeFace.sInverseColor(right), this.sideLength - layer - 1, false);
+                    break;
+                case NORTH:
+                    this.faces[UP].setLine(CubeFace.sInverseColor(down), layer, true);
+                    this.faces[WEST].setLine(CubeFace.sInverseColor(left), layer, true);
+                    this.faces[DOWN].setLine(CubeFace.sInverseColor(up), layer, true);
+                    this.faces[EAST].setLine(CubeFace.sInverseColor(right), layer, true);
+                    break;
+                case SOUTH:
+                    this.faces[DOWN].setLine(down, this.sideLength - layer - 1, true);
+                    this.faces[WEST].setLine(left, this.sideLength - layer - 1, true);
+                    this.faces[UP].setLine(up, this.sideLength - layer - 1, true);
+                    this.faces[EAST].setLine(right, this.sideLength - layer - 1, true);
+                    break;
+                case EAST:
+                    this.faces[SOUTH].setLine(CubeFace.sInverseColor(down), this.sideLength - layer - 1, false);
+                    this.faces[UP].setLine(CubeFace.sInverseColor(left), this.sideLength - layer - 1, false);
+                    this.faces[NORTH].setLine(CubeFace.sInverseColor(up), this.sideLength - layer - 1, false);
+                    this.faces[DOWN].setLine(right, layer, false);
+                    break;
+                case WEST:
+                    this.faces[DOWN].setLine(CubeFace.sInverseColor(down), this.sideLength - layer - 1, false);
+                    this.faces[NORTH].setLine(left, layer, false);
+                    this.faces[UP].setLine(up, layer, false);
+                    this.faces[SOUTH].setLine(right, layer, false);
+                    break;
+                default:
+                    System.err.println("invalid surface number: " + surface);
+                    break;
+            }
+        }catch (ArrayIndexOutOfBoundsException e){
+            System.err.println("invalid layer number: "+layer);
+            e.printStackTrace();
         }
     }
 

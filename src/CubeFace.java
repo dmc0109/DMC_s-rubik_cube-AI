@@ -86,7 +86,7 @@ public class CubeFace implements Serializable {
         return success;
     }
 
-    public Color[] getLine(int idx, boolean horizon) {
+    public Color[] getLine(int idx, boolean horizon) throws ArrayIndexOutOfBoundsException{
         Color[] ans = new Color[face.length];
         if (horizon)
             ans = face[idx];
